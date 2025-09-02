@@ -3,12 +3,19 @@ import re
 import pandas as pd
 import streamlit as st
 from google.cloud import bigquery
+from google.oauth2 import service_account
 from datetime import datetime
 
 # ====== CONFIG ======
 PROJECT_ID = os.getenv("GCP_PROJECT_ID", "disco-sector-423110-r6")
 DATASET_ID = os.getenv("BQ_DATASET", "raw_new")
 TABLE_NAME = os.getenv("BQ_TABLE", "authorize_net_transactions")
+
+# ====== AUTHENTICATION (via Streamlit Secrets) ======
+credentials = service_account.Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"]
+)
+client = bigquery.Client(credentials=credentials, project=credentials.project_id)
 
 # ====== HELPER FUNCTION: Clean column names ======
 def clean_column(col: str) -> str:
