@@ -1,4 +1,3 @@
-import os
 import re
 import pandas as pd
 import streamlit as st
@@ -7,9 +6,9 @@ from google.oauth2 import service_account
 from datetime import datetime
 
 # ====== CONFIG ======
-PROJECT_ID = os.getenv("GCP_PROJECT_ID", "disco-sector-423110-r6")
-DATASET_ID = os.getenv("BQ_DATASET", "raw_new")
-TABLE_NAME = os.getenv("BQ_TABLE", "authorize_net_transactions")
+PROJECT_ID = "disco-sector-423110-r6"
+DATASET_ID = "raw_new"
+TABLE_NAME = "authorize_net_transactions"
 
 # ====== AUTHENTICATION (via Streamlit Secrets) ======
 credentials = service_account.Credentials.from_service_account_info(
@@ -27,11 +26,15 @@ def clean_column(col: str) -> str:
 
 # ====== DATE PARSING ======
 def parse_datetime_with_tz(series):
-    series_clean = series.astype(str).apply(lambda x: re.sub(r"\b[A-Z]{2,4}\b", "", x).strip())
+    series_clean = series.astype(str).apply(
+        lambda x: re.sub(r"\b[A-Z]{2,4}\b", "", x).strip()
+    )
     return pd.to_datetime(series_clean, errors="coerce").dt.date  # force DATE not DATETIME
 
 def parse_date(series):
-    series_clean = series.astype(str).apply(lambda x: re.sub(r"\b[A-Z]{2,4}\b", "", x).strip())
+    series_clean = series.astype(str).apply(
+        lambda x: re.sub(r"\b[A-Z]{2,4}\b", "", x).strip()
+    )
     return pd.to_datetime(series_clean, errors="coerce").dt.date
 
 # ====== STREAMLIT UI ======
@@ -79,7 +82,6 @@ if uploaded_file is not None:
 
     if st.button("🚀 Load to BigQuery"):
         try:
-            client = bigquery.Client(project=PROJECT_ID)
             table_ref = f"{PROJECT_ID}.{DATASET_ID}.{TABLE_NAME}"
 
             # Explicit schema (DATE + INT64 + load_time)
