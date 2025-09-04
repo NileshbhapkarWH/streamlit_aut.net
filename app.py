@@ -76,17 +76,9 @@ if uploaded_file is not None:
             df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
 
     # ✅ Force critical numeric-looking fields to STRING
-    string_columns = ["transaction_id","transaction_status",
-    "settlement_currency","authorization_currency",
-    "authorization_code","reference_transaction_id",
-    "transaction_type","address_verification_status",
-    "card_code_status","fraudscreen_applied",
-    "recurring_billing_transaction","partial_capture_status",
-    "card_number","expiration_date",
-    "bank_account_number","routing_number","currency","invoice_number",
-    "invoice_description","customer_first_name",
+    string_columns = ["transaction_id","transaction_status","settlement_currency","authorization_currency","authorization_code","reference_transaction_id","transaction_type","address_verification_status","card_code_status","fraudscreen_applied","recurring_billing_transaction","partial_capture_status","card_number","expiration_date","bank_account_number","routing_number","currency","invoice_number","invoice_description","customer_first_name",
     "customer_last_name","company","address","city","state","zip",
-    "country","phone","fax","email","customer_id","ship_to_first_name","ship_to_last_name","ship_to_company","ship_to_address","ship_to_city","ship_to_state","ship_to_zip","ship_to_country","l2__tax","l2__freight","l2__tax_exempt","l2__purchase_order_number","cavv_results_code","order_number",
+    "country","phone","fax","email","customer_id","ship_to_first_name","ship_to_last_name","ship_to_company","ship_to_address","ship_to_city","ship_to_state","ship_to_zip","ship_to_country","l2__tax","l2__freight","l2__tax","l2__tax_exempt","l2__purchase_order_number","cavv_results_code","order_number",
     "available_card_balance","approved_amount","market_type","product","reserved7","reserved8","reserved9","reserved10","reserved11","reserved12","reserved13","reserved14"]
     for col in string_columns:
         if col in df.columns:
@@ -149,6 +141,7 @@ if uploaded_file is not None:
                 bigquery.SchemaField("ship_to_country", "STRING"),
                 bigquery.SchemaField("l2__tax", "STRING"),
                 bigquery.SchemaField("l2__freight", "STRING"),
+                bigquery.SchemaField("l2__duty", "STRING"),
                 bigquery.SchemaField("l2__tax_exempt", "STRING"),
                 bigquery.SchemaField("l2__purchase_order_number", "STRING"),
                 bigquery.SchemaField("cavv_results_code", "STRING"),
