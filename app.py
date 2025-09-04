@@ -8,7 +8,7 @@ from datetime import datetime
 # ====== CONFIG ======
 PROJECT_ID = "disco-sector-423110-r6"
 DATASET_ID = "raw_new"
-TABLE_NAME = "authorize_net_transactions"
+TABLE_NAME = "authorize_net_transaction"
 
 # ====== AUTHENTICATION (via Streamlit Secrets) ======
 credentials = service_account.Credentials.from_service_account_info(
@@ -80,9 +80,11 @@ if uploaded_file is not None:
     "customer_last_name","company","address","city","state","zip",
     "country","phone","fax","email","customer_id","ship_to_first_name","ship_to_last_name","ship_to_company","ship_to_address","ship_to_city","ship_to_state","ship_to_zip","ship_to_country","l2__tax","l2__freight","l2__duty","l2__tax_exempt","l2__purchase_order_number","cavv_results_code","order_number",
     "available_card_balance","approved_amount","market_type","product","reserved7","reserved8","reserved9","reserved10","reserved11","reserved12","reserved13","reserved14"]
+    # ✅ Force string columns but preserve NULLs
     for col in string_columns:
         if col in df.columns:
-            df[col] = df[col].astype(str)
+            df[col] = df[col].where(df[col].notnull(), None).astype(object)
+
 
     # ✅ Add load_time column with current timestamp
     df["load_time"] = datetime.utcnow()
