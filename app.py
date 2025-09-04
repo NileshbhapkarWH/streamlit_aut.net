@@ -76,7 +76,7 @@ if uploaded_file is not None:
             df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
 
     # ✅ Force critical numeric-looking fields to STRING
-    string_columns = ["bank_account_number", "routing_number", "card_number", "customer_id", "invoice_number"]
+    string_columns = ["bank_account_number", "routing_number", "card_number", "customer_id", "invoice_number","fax","phone","zip"]
     for col in string_columns:
         if col in df.columns:
             df[col] = df[col].astype(str)
