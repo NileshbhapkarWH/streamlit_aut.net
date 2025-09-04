@@ -75,6 +75,12 @@ if uploaded_file is not None:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
 
+    # ✅ Force critical numeric-looking fields to STRING
+    string_columns = ["bank_account_number", "routing_number", "card_number", "customer_id", "invoice_number"]
+    for col in string_columns:
+        if col in df.columns:
+            df[col] = df[col].astype(str)
+
     # ✅ Add load_time column with current timestamp
     df["load_time"] = datetime.utcnow()
 
