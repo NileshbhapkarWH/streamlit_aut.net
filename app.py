@@ -8,7 +8,7 @@ from datetime import datetime
 # ====== CONFIG ======
 PROJECT_ID = "disco-sector-423110-r6"
 DATASET_ID = "raw_new"
-TABLE_NAME = "authorize_net_transaction"
+TABLE_NAME = "authorize_net_transactions"
 
 # ====== AUTHENTICATION (via Streamlit Secrets) ======
 credentials = service_account.Credentials.from_service_account_info(
